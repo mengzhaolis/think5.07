@@ -32,9 +32,10 @@ class GoodsModel
 	//商品信息入库
 	public static function goods_add()
 	{
-		$data = Request::instance()->param();
-		$id = db('goods')->insertGetId();
+		$data = Request::instance()->except('goods_add_data');
+
 		return $data;
+		$id = db('goods')->insertGetId($data);
 	}
 }
 
