@@ -24,11 +24,14 @@
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>分类栏目：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
 				<select name="goods_type" class="select">
-					<option value="0">一级分类</option>
-					<option value="1">一级分类</option>
-					<option value="11">├二级分类</option>
-					<option value="12">├二级分类</option>
-					<option value="13">├二级分类</option>
+					 {volist name="data" id="data"}
+						<option value="{$data.id}">{$data.type_name}</option>
+						 {volist name="data.son" id="son"}
+							<option value="{$son.id}">{$son.type_name}</option>
+						 {/volist}
+					 {/volist}
+					
+					
 				</select>
 				</span> </div>
 		</div>
@@ -53,9 +56,19 @@
 			</div>
 		</div>
 		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">是否发布：</label>
+			<div class="radio-box">
+				<input type="radio" id="radio-1" name="status" value="1">
+				<label for="radio-1">是</label>
+				<input type="radio" id="radio-1" name="status" value="0">
+				<label for="radio-1">否</label>
+			</div>
+		</div>
+		
+		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">产地：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" name="goods_adress" id="" placeholder="" value="" class="input-text">
+				<input type="text" name="goods_address" id="" placeholder="" value="" class="input-text">
 			</div>
 		</div>
 		<div class="row cl">
@@ -248,7 +261,14 @@ var img_url = $('.ing').attr('src');
 	    		url:"/goods_add_data",
 	    		success:function(data)
 	    		{
-	    			console.log(data)
+	    			if(data!='')
+					{
+						layer.msg('添加成功!', { icon: 1, time: 1000 });
+						window.location.reload();
+					}else
+					{
+						layer.msg('添加失败!', { icon: 5, time: 1000 });
+					}
 	    		}
 	    	});
 	    }

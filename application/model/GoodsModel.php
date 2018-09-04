@@ -20,7 +20,7 @@ class GoodsModel
 	    if($info){
 	        // 成功上传后 获取上传信息
 			$data['img_name'] = $info->getFilename();
-	        $data['img_path'] = $info->getSaveName();
+	        $data['img_path'] = '/uploads/'.$info->getSaveName();
 	        $data['created_at'] = time();
 	        $id = db('public_images')->insertGetId($data);
 	        return $id;
@@ -33,9 +33,35 @@ class GoodsModel
 	public static function goods_add()
 	{
 		$data = Request::instance()->except('goods_add_data');
-
-		return $data;
+		// $data['created_at'] = time();
 		$id = db('goods')->insertGetId($data);
+		return $id;
+	}
+	//商品数据列表-下架
+	public static function goods_delete()
+	{
+		$id = request()->param('id');
+		if(!empty($id))
+		{
+			$data = db('goods')->where('id','=',$id)->update(['status'=>0]);
+			return $data;
+		}else
+		{
+			return 4000;
+		}
+	}
+	//下架商品-商品上架
+	public static function goods_top()
+	{
+		$id = request()->param('id');
+		if(!empty($id))
+		{
+			$data = db('goods')->where('id','=',$id)->update(['status'=>1]);
+			return $data;
+		}else
+		{
+			return 4000;
+		}
 	}
 }
 
